@@ -161,6 +161,7 @@ def display_scatter_plot():
     scatter_canvas.create_image(0, 0, anchor=tk.NW, image=scatter_photo)
     scatter_canvas.image = scatter_photo
 
+
 # Create the GUI
 root = tk.Tk()
 root.title("HSI Anomaly Detector")
@@ -171,7 +172,7 @@ frame = tk.Frame(root, padx=20, pady=20, bg="#F5F5F5")
 frame.pack()
 
 
-heading_label = tk.Label(frame, text="Tomato Anomaly Detector (QualiCrop Demo)", font=("Helvetica", 20, "bold"), bg="#F5F5F5", fg="blue")
+heading_label = tk.Label(frame, text="QualiCrop Tomato Anomaly Detector Demo", font=("Helvetica", 17, "bold"), bg="#F5F5F5", fg="blue")
 heading_label.grid(row=0, columnspan=2, pady=10)
 
 

@@ -105,43 +105,39 @@ def process_sample():
     scatter_points.append(reconstruction_loss)
     display_scatter_plot()
 
-    # Move to the next sample when "Next" is clicked
+    
     current_sample_index += 1
 
-# Function to display images in the canvas
 def display_images(original_img, highlighted_img):
-    # Convert numpy arrays to images
     original_img = (original_img * 255).astype(np.uint8)
     highlighted_img = (highlighted_img * 255).astype(np.uint8)
 
     original_image = Image.fromarray(original_img)
     highlighted_image = Image.fromarray(highlighted_img)
 
-    # Resize images to fit the canvas
+    
     original_image = original_image.resize((300, 300))
     highlighted_image = highlighted_image.resize((300, 300))
 
-    # Create PhotoImage objects
     original_photo = ImageTk.PhotoImage(original_image)
     highlighted_photo = ImageTk.PhotoImage(highlighted_image)
 
-    # Clear existing image on the canvas and display new images
+   
     original_canvas.delete("all")
     original_canvas.create_image(0, 0, anchor=tk.NW, image=original_photo)
     
     highlighted_canvas.delete("all")
     highlighted_canvas.create_image(0, 0, anchor=tk.NW, image=highlighted_photo)
 
-    # Keep a reference to avoid garbage collection
+   
     original_canvas.image = original_photo
     highlighted_canvas.image = highlighted_photo
 
-# Function to display the scatter plot
+#display the scatter plot
 def display_scatter_plot():
-    # Clear the scatter canvas before drawing a new plot
     scatter_canvas.delete("all")
     
-    # Create a scatter plot using matplotlib
+    
     plt.figure(figsize=(3, 3))
     plt.scatter(range(len(scatter_points)), scatter_points, c=['green' if x < 1900 else 'red' for x in scatter_points], s=100)
     plt.axhline(y=1900, color='blue', linestyle='--', label='Threshold')
@@ -151,60 +147,60 @@ def display_scatter_plot():
     plt.title('Reconstruction Loss vs. Threshold')
     plt.legend(loc='upper right')
     
-    # Save the plot to a temporary image file
+    
     plt.tight_layout()
     plt.savefig('scatter_plot.png', bbox_inches='tight', transparent=True)
     plt.close()
 
-    # Load the saved scatter plot image
+    
     scatter_image = Image.open('scatter_plot.png')
     scatter_image = scatter_image.resize((300, 300))
     scatter_photo = ImageTk.PhotoImage(scatter_image)
     
-    # Display the scatter plot on the canvas
+    
     scatter_canvas.create_image(0, 0, anchor=tk.NW, image=scatter_photo)
     scatter_canvas.image = scatter_photo
 
 # Create the GUI
 root = tk.Tk()
 root.title("HSI Anomaly Detector")
-root.configure(bg="#F5F5F5")  # Set background color for the window
+root.configure(bg="#F5F5F5")  # Set background 
 
-# Add a frame for better layout
+
 frame = tk.Frame(root, padx=20, pady=20, bg="#F5F5F5")
 frame.pack()
 
-# Add a heading for the GUI
+
 heading_label = tk.Label(frame, text="Tomato Anomaly Detector (QualiCrop Demo)", font=("Helvetica", 20, "bold"), bg="#F5F5F5", fg="blue")
 heading_label.grid(row=0, columnspan=2, pady=10)
 
-# Create a button to load the data
+
 load_button = tk.Button(frame, text="Load HSI Tensor", command=load_data, width=20, bg="#4CAF50", fg="white", font=("Helvetica", 12))
 load_button.grid(row=1, column=0, pady=10)
 
-# Create a button to process the data
+
 process_button = tk.Button(frame, text="Process HSI Tensor", command=process_data, width=20, bg="#2196F3", fg="white", font=("Helvetica", 12))
 process_button.grid(row=1, column=1, pady=10)
 
-# Create a button for the "Next" functionality
+
 next_button = tk.Button(frame, text="Next", command=process_sample, width=20, bg="#FF9800", fg="white", font=("Helvetica", 12))
 next_button.grid(row=2, columnspan=2, pady=10)
 
-# Create a label for anomaly indication
+
 anomaly_label = tk.Label(frame, text="", font=("Helvetica", 16), bg="#F5F5F5")
 anomaly_label.grid(row=3, columnspan=2, pady=10)
 
-# Create a label to show counts of good and bad samples
+
 good_bad_count_label = tk.Label(frame, text="Good Tomatoes: 0 | Anomalous Tomatoes: 0", font=("Helvetica", 14), bg="#F5F5F5")
 good_bad_count_label.grid(row=4, columnspan=2, pady=5)
 
-# Create canvas elements for displaying images
+
 original_canvas = tk.Canvas(frame, width=300, height=300, bg="#E0E0E0")
 original_canvas.grid(row=5, column=0, padx=10, pady=10)
 highlighted_canvas = tk.Canvas(frame, width=300, height=300, bg="#E0E0E0")
 highlighted_canvas.grid(row=5, column=1, padx=10, pady=10)
 
-# Create a canvas for displaying the scatter plot
+
 scatter_canvas = tk.Canvas(frame, width=300, height=300, bg="#E0E0E0")
 scatter_canvas.grid(row=6, columnspan=2, padx=10, pady=10)
 

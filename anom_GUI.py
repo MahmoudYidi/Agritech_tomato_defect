@@ -18,12 +18,12 @@ bad_count = 0
 # load the data
 def load_data():
     global hsi_tensor
-    # Load normalization components
+    
     with open('normalization_components.pkl', 'rb') as f:
         components = pickle.load(f)
     components = {key: torch.tensor(value) for key, value in components.items()}
 
-    # Load the input tensor and normalize
+    
     data_dir = filedialog.askopenfilename(title="Select HSI Tensor File", filetypes=[("PT files", "*.pt")])
     if data_dir:
         hsi_tensor = torch.load(data_dir)
@@ -37,13 +37,13 @@ def process_data():
         messagebox.showwarning("Load Data", "Please load HSI Tensor data first.")
         return  
 
-    # Define the model and load weights
+    
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = VAE(input_channels=4).to(device)
     model.load_state_dict(torch.load('auto_vae2.pth'))
     model.eval()
 
-    # Prepare data for multiple samples and run the model
+    
     hsi_tensor = hsi_tensor.to(device)
     current_sample_index = 0
     good_count = 0
@@ -80,28 +80,28 @@ def process_sample():
         anomaly_label.config(text=f"Sample {current_sample_index+1}: Good Tomato", fg="green")
         good_count += 1
 
-    # Update the good and bad counts
+    
     good_bad_count_label.config(text=f"Good Tomatoes: {good_count} | Anomalous Tomatoes: {bad_count}")
 
-    # Visualize the error overlayed on the original image
-    original_img = original.squeeze().cpu().permute(1, 2, 0)[:, :, :3].numpy()  # Convert to NumPy array
+    
+    original_img = original.squeeze().cpu().permute(1, 2, 0)[:, :, :3].numpy()
     error_img = error.permute(1, 2, 0).numpy()
 
-    # Define a threshold for highlighting errors
-    threshold = 0.02  # Adjust this value based on your specific use case
+    
+    threshold = 0.02  
     error_highlight = (error_img > threshold).astype(np.float32)
 
-    # Create a red overlay where the error exceeds the threshold
+    
     red_overlay = np.zeros_like(original_img)
-    red_overlay[:, :, 0] = error_highlight[:, :, 0]  # Red channel
+    red_overlay[:, :, 0] = error_highlight[:, :, 0]  
 
-    # Combine original image with red overlay
-    highlighted_img = np.clip(original_img + red_overlay, 0, 1)  # Ensure values stay within [0, 1]
+    
+    highlighted_img = np.clip(original_img + red_overlay, 0, 1)  
 
-    # Show images in the GUI
+    
     display_images(original_img, highlighted_img)
 
-    # Update scatter points and plot
+   
     scatter_points.append(reconstruction_loss)
     display_scatter_plot()
 

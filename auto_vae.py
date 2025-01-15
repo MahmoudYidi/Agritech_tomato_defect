@@ -156,7 +156,7 @@ def thresholding_otsu(hsi_tensor):
     return thresholded_tensor
 
 def normalize_ori_hsi_tensor(hsi_tensor):
-    # Convert the input tensor to float for precision
+    # Convert the input tensor to float
     hsi_tensor = hsi_tensor.float()
     
     # Standard normalization

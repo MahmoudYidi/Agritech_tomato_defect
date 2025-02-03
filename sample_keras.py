@@ -1,8 +1,15 @@
 import matplotlib.pyplot as plt
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Flatten
-from tensorflow.keras.datasets import mnist
-from tensorflow.keras.utils import to_categorical
+from tensorflow import keras
+from keras.layers import Dense, Flatten
+from keras.models import Sequential
+from keras.datasets import mnist
+from keras.utils import to_categorical
+
+import tensorflow as tf
+
+# List available GPUs
+print("Num GPUs Available:", len(tf.config.list_physical_devices('GPU')))
+print("Available GPUs:", tf.config.list_physical_devices('GPU'))
 
 # Load the MNIST dataset
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
